@@ -45,12 +45,12 @@ return (
 <Box w="40%" margin={"0 auto"} display="block" mt={5}>
 <Stack direction="column">
 <Input
-placeholder="Title"
+placeholder="Todo Title"
 value={title}
 onChange={(e) => setTitle(e.target.value)}
 />
 <Textarea
-placeholder="Description"
+placeholder="Todo Description"
 value={description}
 onChange={(e) => setDescription(e.target.value)}
 />
@@ -74,7 +74,7 @@ disabled={title.length < 1 || description.length < 1 || isLoading}
 variantColor="teal"
 variant="solid"
 >
-Add
+Add a Todo
 </Button>
 </Stack>
 </Box>
