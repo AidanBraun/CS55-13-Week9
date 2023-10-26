@@ -11,53 +11,54 @@ import useAuth from "../hooks/useAuth";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "../firebase";
 import { FaTrash } from "react-icons/fa";
-import { deleteNote } from "../api/todo";
+import { deleteContact } from "../api/todo";
 
-const NoteList = () => {
-  const [theNotes, setNotes] = React.useState([]);
+const ContactList = () => {
+  const [theContacts, setContacts] = React.useState([]);
   const { user } = useAuth();
   const toast = useToast();
   const refreshData = () => {
     if (!user) {
-      setNotes([]);
+      setContacts([]);
       return;
     }
-    const q = query(collection(db, "events"), where("user", "==", user.uid));
+    const q = query(collection(db, "contacts"), where("user", "==", user.uid));
     onSnapshot(q, (querySnapchot) => {
       let ar = [];
       querySnapchot.docs.forEach((doc) => {
         ar.push({ id: doc.id, ...doc.data() });
       });
-      setNotes(ar);
+      setContacts(ar);
     });
   };
   useEffect(() => {
     refreshData();
   }, [user]);
-  const handleNoteDelete = async (id) => {
-    if (confirm("Are you sure you wanna delete this event?")) {
-      deleteNote(id);
-      toast({ title: "Event deleted successfully", status: "success" });
+  const handleContactDelete = async (id) => {
+    if (confirm("Are you sure you wanna delete this contact?")) {
+      deleteContact(id);
+      toast({ title: "Contact deleted successfully", status: "success" });
     }
   };
 
   return (
     <Box mt={5}>
       <SimpleGrid columns={{ base: 1, md: 3 }} spacing={8}>
-        {theNotes &&
-          theNotes.map(
-            (notes) => (
+        {theContacts &&
+          theContacts.map(
+            (contacts) => (
               <Box
                 p={3}
                 boxShadow="2xl"
                 shadow={"dark-lg"}
                 transition="0.2s"
                 _hover={{ boxShadow: "sm" }}
-                key={notes.id}
+                key={contacts.id}
               >
                 <Heading as="h3" fontSize={"xl"}>
-                  {notes.eventDate}
+                  {contacts.firstName}
                   {" "}
+                  {contacts.lastName}
                   <Badge
                     color="red.500"
                     bg="inherit"
@@ -68,13 +69,15 @@ const NoteList = () => {
                     }}
                     float="right"
                     size="xs"
-                    onClick={() => handleNoteDelete(notes.id)}
+                    onClick={() => handleContactDelete(contacts.id)}
                   >
                     <FaTrash />
                   </Badge>
                 </Heading>
                 <Text>
-                  {notes.description}
+                  {contacts.phoneNum}
+                  <br></br>
+                  {contacts.emailAddress}
                 </Text>
               </Box>
             )
@@ -84,4 +87,4 @@ const NoteList = () => {
     </Box>
   );
 };
-export default NoteList;
+export default ContactList;

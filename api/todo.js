@@ -45,9 +45,9 @@ const deleteTodo = async (docId) => {
 
 const addNote = async ({userId, title, description}) => {
   try {
-    await addDoc(collection(db, "notes"), {
+    await addDoc(collection(db, "events"), {
       user: userId,
-      title: title,
+      eventDate: title,
       description: description,
       createdAt: new Date().getTime(),
     });
@@ -58,11 +58,37 @@ const addNote = async ({userId, title, description}) => {
 
 const deleteNote = async (docId) => {
   try {
-    const todoRef = doc(db, "notes", docId);
+    const todoRef = doc(db, "events", docId);
     await deleteDoc(todoRef);
   } catch (err) {
     console.log(err);
   }
 };
 
-export { addTodo, toggleTodoStatus, deleteTodo, addNote, deleteNote };
+const addContact = async ({userId, firstN, lastN, phoneNumber, email}) => {
+  try {
+    await addDoc(collection(db, "contacts"), {
+      user: userId,
+      firstName: firstN,
+      lastName: lastN,
+      phoneNum: phoneNumber,
+      emailAddress: email,
+      createdAt: new Date().getTime(),
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const deleteContact = async (docId) => {
+  try {
+    const contactRef = doc(db, "contacts", docId);
+    await deleteDoc(contactRef);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+
+
+export { addTodo, toggleTodoStatus, deleteTodo, addNote, deleteNote, addContact, deleteContact };
