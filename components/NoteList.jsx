@@ -17,6 +17,7 @@ const NoteList = () => {
   const [theNotes, setNotes] = React.useState([]);
   const { user } = useAuth();
   const toast = useToast();
+/*
   const refreshData = () => {
     if (!user) {
       setNotes([]);
@@ -31,10 +32,26 @@ const NoteList = () => {
       setNotes(ar);
     });
   };
+*/
   useEffect(() => {
-    refreshData();
-    <em>// eslint-disable-next-line react-hooks/exhaustive-deps</em>
-  }, [user, refreshData]);
+    //refreshData();
+    //<em>// eslint-disable-next-line react-hooks/exhaustive-deps</em>
+
+    if (!user) {
+      setNotes([]);
+      return;
+    }
+    const q = query(collection(db, "events"), where("user", "==", user.uid));
+    onSnapshot(q, (querySnapchot) => {
+      let ar = [];
+      querySnapchot.docs.forEach((doc) => {
+        ar.push({ id: doc.id, ...doc.data() });
+      });
+      setNotes(ar);
+    });
+
+  }, [user]);
+  
   const handleNoteDelete = async (id) => {
     if (confirm("Are you sure you wanna delete this event?")) {
       deleteNote(id);

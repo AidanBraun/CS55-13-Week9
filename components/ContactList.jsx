@@ -17,6 +17,7 @@ const ContactList = () => {
   const [theContacts, setContacts] = React.useState([]);
   const { user } = useAuth();
   const toast = useToast();
+  /*
   const refreshData = () => {
     if (!user) {
       setContacts([]);
@@ -31,10 +32,27 @@ const ContactList = () => {
       setContacts(ar);
     });
   };
+  */
+ 
   useEffect(() => {
-    refreshData();
-    <em>// eslint-disable-next-line react-hooks/exhaustive-deps</em>
-  }, [user, refreshData]);
+    //refreshData();
+    //<em>// eslint-disable-next-line react-hooks/exhaustive-deps</em>
+
+    if (!user) {
+      setContacts([]);
+      return;
+    }
+    const q = query(collection(db, "contacts"), where("user", "==", user.uid));
+    onSnapshot(q, (querySnapchot) => {
+      let ar = [];
+      querySnapchot.docs.forEach((doc) => {
+        ar.push({ id: doc.id, ...doc.data() });
+      });
+      setContacts(ar);
+    });
+
+  }, [user]);
+
   const handleContactDelete = async (id) => {
     if (confirm("Are you sure you wanna delete this contact?")) {
       deleteContact(id);
