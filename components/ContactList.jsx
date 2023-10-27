@@ -34,7 +34,7 @@ const ContactList = () => {
   useEffect(() => {
     refreshData();
     <em>// eslint-disable-next-line react-hooks/exhaustive-deps</em>
-  }, [user]);
+  }, [user, refreshData]);
   const handleContactDelete = async (id) => {
     if (confirm("Are you sure you wanna delete this contact?")) {
       deleteContact(id);
