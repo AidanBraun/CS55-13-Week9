@@ -33,6 +33,7 @@ const NoteList = () => {
   };
   useEffect(() => {
     refreshData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
   const handleNoteDelete = async (id) => {
     if (confirm("Are you sure you wanna delete this event?")) {
