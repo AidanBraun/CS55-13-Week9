@@ -76,6 +76,7 @@ const TodoList = () => {
               shadow={"dark-lg"}
               transition="0.2s"
               _hover={{ boxShadow: "sm" }}
+              key={todo.id}
             >
               <Heading as="h3" fontSize={"xl"}>
                 {todo.title}{" "}
